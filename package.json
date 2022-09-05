@@ -1,5 +1,5 @@
 {
-  "name": "marvel-fe-api",
+  "name": "ga-fe",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -15,7 +15,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_ENV=develop react-scripts build",
+    "local": "REACT_APP_ENV=local react-scripts start",
+    "develop": "REACT_APP_ENV=develop react-scripts start",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
