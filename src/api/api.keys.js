@@ -1,0 +1,4 @@
+export const PUBLIC_KEY = 'ed93ac1718141d79e69d39525c8f16e5'
+
+export const PRIVTE_KEY = 'cb0191ffb092534ee602367859382e075ec22f3e'
+
