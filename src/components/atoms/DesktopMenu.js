@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import { GlobalApiParamsState } from '../../store/params/params.state'
 import Logo from '../atoms/Logo'
 
 const DesktopMenu = ({ menuItems: menu }) => {
+  const { format, setApiParams } = useContext(GlobalApiParamsState)
+
   return (
     <>
       <Box
@@ -15,10 +18,12 @@ const DesktopMenu = ({ menuItems: menu }) => {
         }}
       >
         <Logo />
-        {menu.map((menu) => (
+        {menu.map((menu, index) => (
           <Button
-            key={menu.id}
+            key={index}
             sx={{ my: 2, color: 'white', display: 'block' }}
+            style={{ color: format === menu.id ? '#DD2C2C' : '#FFF' }}
+            onClick={() => setApiParams({ format: menu.id, offset: 0 })}
             disableRipple
           >
             {menu.title}

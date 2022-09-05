@@ -1,21 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Box from '@mui/material/Box'
 import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-
+import { GlobalApiParamsState } from '../../store/params/params.state'
 import Logo from '../atoms/Logo'
 
 const MobileMenu = ({ menuItems: menu }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
+  const { setApiParams } = useContext(GlobalApiParamsState)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
   }
 
-  const handleCloseNavMenu = () => {
+  const handleCloseNavMenu = (menuId) => {
+    setApiParams({ format: menuId, offset: 0 })
     setAnchorElNav(null)
   }
 
@@ -59,7 +61,7 @@ const MobileMenu = ({ menuItems: menu }) => {
         }}
       >
         {menu.map((menu) => (
-          <MenuItem key={menu.id} onClick={handleCloseNavMenu}>
+          <MenuItem key={menu.id} onClick={() => handleCloseNavMenu(menu.id)}>
             <Typography textAlign="center">{menu.title}</Typography>
           </MenuItem>
         ))}

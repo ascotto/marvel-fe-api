@@ -6,10 +6,10 @@ import MobileMenu from '../atoms/MobileMenu'
 import DesktopMenu from '../atoms/DesktopMenu'
 
 const menu = [
-  { id: 'all', title: 'All' },
+  { id: '', title: 'All' },
   { id: 'comic', title: 'Comic' },
   { id: 'magazine', title: 'Magazine' },
-  { id: 'digital-comic', title: 'Digital Comic' },
+  { id: 'digital comic', title: 'Digital Comic' },
 ]
 
 const TopBarMenu = () => {
