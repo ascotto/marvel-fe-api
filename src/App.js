@@ -5,6 +5,7 @@ import { CircularProgress, Grid, Paper } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
+import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 
 const App = () => {
   const [data, setData] = useState({ results: [], total: null })
@@ -13,8 +14,6 @@ const App = () => {
   const observer = useRef()
 
   const { results, total } = data
-
-
 
   const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
     useContext(GlobalApiParamsState)
@@ -109,8 +108,6 @@ const App = () => {
           } else if (total - offset <= 20 && total - offset > 0) {
             setApiParams({ offset: offset + (total - offset) })
           }
-
-   
         }
       })
       if (node) observer.current.observe(node)
@@ -134,62 +131,69 @@ const App = () => {
     <>
       <TopBarMenu />
       {open}
-      <div className="App">
-        <Container maxWidth="xl">
-          <Grid
-            container
-            spacing={'18px'}
-            alignItems="stretch"
-            style={{ margin: '0 auto' }}
-          >
-            {results.length > 0 &&
-              results.map((comic, index) => (
-                <Grid item xs={6} xl={2} key={comic.id.toString()}>
-                  <Paper
-                    sx={{ height: '100%' }}
-                    {...(index === data.results.length - 1
-                      ? { ref: lastNodeElement }
-                      : null)}
-                  >
-                    {comic.id.toString()}
-                    <img
-                      alt={comic.title + ' | Marvel Comics'}
-                      src={
-                        comic.thumbnail.path +
-                        '/portrait_fantastic.' +
-                        comic.thumbnail.extension
-                      }
-                    />
 
-                    <h3>{comic.title}</h3>
-                    <button onClick={() => moreInfoHandler(index)}>
-                      More info
-                    </button>
-                    <p>
-                      {comic?.prices.length > 1
-                        ? getLowestPrice(comic.prices)
-                        : comic?.prices[0].price}
-                    </p>
-                  </Paper>
-                </Grid>
-              ))}
-            {loading && (
+      <Container maxWidth="xl">
+        <MainBreadcrumbs selectedFilter={format} />
+
+        <Grid
+          container
+          spacing={'18px'}
+          alignItems="stretch"
+          style={{ margin: '0 auto' }}
+        >
+          {results.length > 0 &&
+            results.map((comic, index) => (
               <Grid
                 item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: 200,
-                }}
+                xs={6}
+                xl={2}
+                key={comic.id.toString()}
+                sx={{ padding: 0 }}
               >
-                <CircularProgress color="inherit" />
+                <Paper
+                  sx={{ height: '100%' }}
+                  {...(index === data.results.length - 1
+                    ? { ref: lastNodeElement }
+                    : null)}
+                >
+                  {comic.id.toString()}
+                  <img
+                    alt={comic.title + ' | Marvel Comics'}
+                    src={
+                      comic.thumbnail.path +
+                      '/portrait_fantastic.' +
+                      comic.thumbnail.extension
+                    }
+                  />
+
+                  <h3>{comic.title}</h3>
+                  <button onClick={() => moreInfoHandler(index)}>
+                    More info
+                  </button>
+                  <p>
+                    {comic?.prices.length > 1
+                      ? getLowestPrice(comic.prices)
+                      : comic?.prices[0].price}
+                  </p>
+                </Paper>
               </Grid>
-            )}
-          </Grid>
-        </Container>
-      </div>
+            ))}
+          {loading && (
+            <Grid
+              item
+              xs={12}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: 200,
+              }}
+            >
+              <CircularProgress color="inherit" />
+            </Grid>
+          )}
+        </Grid>
+      </Container>
     </>
   )
 }
