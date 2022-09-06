@@ -1,16 +1,14 @@
 import { createContext, useReducer } from 'react'
 import ProtpTypes from 'prop-types'
-import md5 from 'md5'
-import { PRIVATE_KEY, PUBLIC_KEY } from '../../api/api.keys'
-
-const timestamp = Date.now()
+import { PUBLIC_KEY } from '../../api/api.keys'
+import { API_HASH, TIME_STAMP } from '../../api/api.hash'
 
 // GLOBAL PARAMS STATE
 export const API_PARAMS_STATE = {
   apikey: PUBLIC_KEY,
   offset: 0,
-  ts: timestamp,
-  hash: md5(timestamp + PRIVATE_KEY + PUBLIC_KEY),
+  ts: TIME_STAMP,
+  hash: API_HASH,
   format: '',
 }
 
