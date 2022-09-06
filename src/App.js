@@ -7,17 +7,26 @@ import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
+import { BasicModal, InfoModal } from './components/molecules/Modal'
 
 const App = () => {
+  // Api
   const [data, setData] = useState({ results: [], total: null })
   const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useState(false)
-  const observer = useRef()
-
   const { results, total } = data
-
   const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
     useContext(GlobalApiParamsState)
+
+  // Modal
+  const [openModal, setOpenModal] = useState(false)
+  const [comicInfo, setComicInfo] = useState({})
+  const handleOpenModal = () => setOpenModal(true)
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    setComicInfo({})
+  }
+
+  const observer = useRef()
 
   const prevformat = useRef()
 
@@ -101,15 +110,23 @@ const App = () => {
   const lastComicRef = useGetLastNodeCallback(observer, loading, loadMore)
 
   const moreInfoHandler = (index) => {
-    console.log(data[index])
-
-    setOpen(true)
+    setComicInfo(data.results[index])
+    console.log('comicInfo', data.results[index].dates[0].date)
+    console.log('comicInfo', data.results[index])
+    handleOpenModal()
   }
 
   return (
     <>
       <TopBarMenu />
-      {open}
+
+      {openModal && (
+        <InfoModal
+          open={openModal}
+          comic={comicInfo}
+          handleClose={handleCloseModal}
+        />
+      )}
 
       <Container maxWidth="xl">
         <MainBreadcrumbs selectedFilter={format} />
