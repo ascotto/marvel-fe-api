@@ -10,6 +10,7 @@ export const API_PARAMS_STATE = {
   ts: TIME_STAMP,
   hash: API_HASH,
   format: '',
+  orderBy: '-modified',
 }
 
 export const GlobalApiParamsState = createContext()
@@ -31,6 +32,7 @@ const ApiParamsReducer = (state, action) => {
         ...oldState,
         ...action.payload,
       }
+
     default:
       return state
   }

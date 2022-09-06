@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback, useRef } from 'react'
 import { urlWithParams } from './utility/url'
 import Endpoints from './constants/endpoints'
 import { CircularProgress, Grid, Paper } from '@mui/material'
@@ -7,18 +7,25 @@ import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 
 const App = () => {
-  const [data, setData] = useState([])
+  const [data, setData] = useState({ results: [], total: null })
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
+  const observer = useRef()
 
-  //  const defaultResults = 20
+  const { results, total } = data
 
-  const { apikey, offset, ts, hash, format } = useContext(GlobalApiParamsState)
+
+
+  const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
+    useContext(GlobalApiParamsState)
+
+  const prevformat = useRef()
 
   useEffect(() => {
     const fetchData = async () => {
       const apiUrl = Endpoints.Comics.Url.Base
 
+      // show spinner
       setLoading(true)
 
       const fetchURL = urlWithParams(apiUrl, {
@@ -27,23 +34,89 @@ const App = () => {
         ts,
         hash,
         format,
+        orderBy,
       })
 
-      const results = await fetch(fetchURL)
+      console.log('fetchURL', fetchURL.split('&'))
+
+      // Fetch data from API
+      const response = await fetch(fetchURL)
         .then((res) => res.json())
         .then((res) => {
           return res.data
         })
-        .then((res) => res.results)
+        .then((res) => res)
 
+      // Handle first load, infinite load, and format change
+      if (
+        data.results.length === 0 &&
+        typeof observer.current === 'undefined'
+      ) {
+        // first load
+        setData({ results: response.results, total: response.total })
+      } else if (
+        data.results.length > 0 &&
+        prevformat.current === format &&
+        data.results.length + 20 <= data.total
+      ) {
+        // infinite load
+        const oldData = JSON.parse(JSON.stringify(data.results))
+
+        // remove duplicates
+        const newData = response.results.filter(
+          (result) => !oldData.some((old) => old.id === result.id),
+        )
+
+        setData({ results: [...oldData, ...newData], total: data.total })
+      } else if (data.results.length > 0 && prevformat.current !== format) {
+        // format change
+        setData({ results: response.results, total: response.total })
+      }
+
+      // hide spinner
       setLoading(false)
-      setData(results)
+
+      // set prevformat
+      prevformat.current = format
     }
 
+    // fetch data
     fetchData()
   }, [offset, format])
 
-  console.log(data)
+  useEffect(() => {
+    console.log(data)
+  }, [data])
+
+  const lastNodeElement = useCallback(
+    (node) => {
+      // prevent unnecessary calls
+      if (loading) return
+
+      if (observer.current) observer.current.disconnect()
+
+      // set the last node element
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          console.log('end  of page')
+
+          // if offset is less than total, fetch more data
+
+          if (loading) return
+
+          if (offset + 20 <= total) {
+            setApiParams({ offset: offset + 20 })
+          } else if (total - offset <= 20 && total - offset > 0) {
+            setApiParams({ offset: offset + (total - offset) })
+          }
+
+   
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [loading],
+  )
 
   // get lowest price from array of objects
   const getLowestPrice = (prices) => {
@@ -69,21 +142,16 @@ const App = () => {
             alignItems="stretch"
             style={{ margin: '0 auto' }}
           >
-            {loading && (
-              <Grid
-                item
-                xs={12}
-                sx={{ display: 'flex', justifyContent: 'center' }}
-              >
-                <CircularProgress color="inherit" />
-              </Grid>
-            )}
-
-            {data.length > 0 &&
-              !loading &&
-              data.map((comic, index) => (
+            {results.length > 0 &&
+              results.map((comic, index) => (
                 <Grid item xs={6} xl={2} key={comic.id.toString()}>
-                  <Paper sx={{ height: '100%' }}>
+                  <Paper
+                    sx={{ height: '100%' }}
+                    {...(index === data.results.length - 1
+                      ? { ref: lastNodeElement }
+                      : null)}
+                  >
+                    {comic.id.toString()}
                     <img
                       alt={comic.title + ' | Marvel Comics'}
                       src={
@@ -105,6 +173,20 @@ const App = () => {
                   </Paper>
                 </Grid>
               ))}
+            {loading && (
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 200,
+                }}
+              >
+                <CircularProgress color="inherit" />
+              </Grid>
+            )}
           </Grid>
         </Container>
       </div>

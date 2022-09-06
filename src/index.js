@@ -8,13 +8,11 @@ import { ApiParamsProvider } from './store/params/params.state'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <React.StrictMode>
-    <StyledEngineProvider injectFirst>
-      <ApiParamsProvider>
-        <App />
-      </ApiParamsProvider>
-    </StyledEngineProvider>
-  </React.StrictMode>,
+  <StyledEngineProvider injectFirst>
+    <ApiParamsProvider>
+      <App />
+    </ApiParamsProvider>
+  </StyledEngineProvider>,
 )
 
 // If you want to start measuring performance in your app, pass a function
