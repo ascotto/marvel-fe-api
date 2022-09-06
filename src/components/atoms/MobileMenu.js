@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
 import { GlobalApiParamsState } from '../../store/params/params.state'
-import Logo from '../atoms/Logo'
+import Logo from './Logo'
 
 const MobileMenu = ({ menuItems: menu }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)

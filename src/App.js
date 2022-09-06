@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { urlWithParams } from './utility/url'
 import Endpoints from './constants/endpoints'
 import { CircularProgress, Grid, Paper } from '@mui/material'
@@ -11,7 +11,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
 
-  const defaultResults = 20
+  //  const defaultResults = 20
 
   const { apikey, offset, ts, hash, format } = useContext(GlobalApiParamsState)
 
@@ -60,7 +60,7 @@ const App = () => {
   return (
     <>
       <TopBarMenu />
-
+      {open}
       <div className="App">
         <Container maxWidth="xl">
           <Grid
@@ -113,7 +113,3 @@ const App = () => {
 }
 
 export default App
-
-// ;('http://i.annihil.us/u/prod/marvel/i/mg/9/50/4bc49463dad62')
-
-// http://x.annihil.us/u/prod/marvel/i/mg/3/40/4bb4680432f73/portrait_fantastic.jpg
