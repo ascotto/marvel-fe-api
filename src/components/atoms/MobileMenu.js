@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import PropTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
@@ -69,6 +70,10 @@ const MobileMenu = ({ menuItems: menu }) => {
       <Logo />
     </Box>
   )
+}
+
+MobileMenu.propTypes = {
+  menuItems: PropTypes.array.isRequired,
 }
 
 export default MobileMenu

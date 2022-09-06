@@ -1,4 +1,5 @@
 import { createContext, useReducer } from 'react'
+import ProtpTypes from 'prop-types'
 import md5 from 'md5'
 import { PRIVATE_KEY, PUBLIC_KEY } from '../../api/api.keys'
 
@@ -36,7 +37,6 @@ const ApiParamsReducer = (state, action) => {
       return state
   }
 }
-
 export const ApiParamsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(ApiParamsReducer, API_PARAMS_STATE)
 
@@ -52,4 +52,8 @@ export const ApiParamsProvider = ({ children }) => {
       {children}
     </GlobalApiParamsState.Provider>
   )
+}
+
+ApiParamsProvider.propTypes = {
+  children: ProtpTypes.node.isRequired,
 }

@@ -1,4 +1,5 @@
 import { useContext } from 'react'
+import ProtpTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { GlobalApiParamsState } from '../../store/params/params.state'
@@ -33,6 +34,10 @@ const DesktopMenu = ({ menuItems: menu }) => {
       <Box sx={{ flexGrow: 0 }}></Box>
     </>
   )
+}
+
+DesktopMenu.propTypes = {
+  menuItems: ProtpTypes.array.isRequired,
 }
 
 export default DesktopMenu
