@@ -1,11 +1,12 @@
-import { useState, useEffect, useContext, useCallback, useRef } from 'react'
-import { urlWithParams } from './utility/url'
+import { useState, useEffect, useContext, useRef } from 'react'
+import { urlWithParams, getLowestPrice } from './utility'
 import Endpoints from './constants/endpoints'
 import { CircularProgress, Grid, Paper } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
+import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
 
 const App = () => {
   const [data, setData] = useState({ results: [], total: null })
@@ -87,39 +88,17 @@ const App = () => {
     console.log(data)
   }, [data])
 
-  const lastNodeElement = useCallback(
-    (node) => {
-      // prevent unnecessary calls
-      if (loading) return
+  const loadMore = () => {
+    if (loading) return
 
-      if (observer.current) observer.current.disconnect()
-
-      // set the last node element
-      observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          console.log('end  of page')
-
-          // if offset is less than total, fetch more data
-
-          if (loading) return
-
-          if (offset + 20 <= total) {
-            setApiParams({ offset: offset + 20 })
-          } else if (total - offset <= 20 && total - offset > 0) {
-            setApiParams({ offset: offset + (total - offset) })
-          }
-        }
-      })
-      if (node) observer.current.observe(node)
-    },
-    [loading],
-  )
-
-  // get lowest price from array of objects
-  const getLowestPrice = (prices) => {
-    const pricesArray = prices.map((price) => price.price)
-    return Math.min(...pricesArray)
+    if (offset + 20 <= total) {
+      setApiParams({ offset: offset + 20 })
+    } else if (total - offset <= 20 && total - offset > 0) {
+      setApiParams({ offset: offset + (total - offset) })
+    }
   }
+
+  const lastComicRef = useGetLastNodeCallback(observer, loading, loadMore)
 
   const moreInfoHandler = (index) => {
     console.log(data[index])
@@ -153,7 +132,7 @@ const App = () => {
                 <Paper
                   sx={{ height: '100%' }}
                   {...(index === data.results.length - 1
-                    ? { ref: lastNodeElement }
+                    ? { ref: lastComicRef }
                     : null)}
                 >
                   {comic.id.toString()}
