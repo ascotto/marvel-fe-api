@@ -7,7 +7,7 @@ import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
-import { BasicModal, InfoModal } from './components/molecules/Modal'
+import { InfoModal } from './components/molecules/Modal'
 
 const App = () => {
   // Api
