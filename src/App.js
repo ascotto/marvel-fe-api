@@ -1,23 +1,33 @@
 import { useState, useEffect, useContext, useRef } from 'react'
-import { urlWithParams, getLowestPrice } from './utility'
+import { urlWithParams } from './utility'
 import Endpoints from './constants/endpoints'
-import { CircularProgress, Grid, Paper } from '@mui/material'
+import { CircularProgress, Grid } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
+import { InfoModal } from './components/molecules/Modal'
+import ComicCard from './components/molecules/ComicCard'
 
 const App = () => {
+  // Api
   const [data, setData] = useState({ results: [], total: null })
   const [loading, setLoading] = useState(false)
-  const [open, setOpen] = useState(false)
-  const observer = useRef()
-
   const { results, total } = data
-
   const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
     useContext(GlobalApiParamsState)
+
+  // Modal
+  const [openModal, setOpenModal] = useState(false)
+  const [comicInfo, setComicInfo] = useState({})
+  const handleOpenModal = () => setOpenModal(true)
+  const handleCloseModal = () => {
+    setOpenModal(false)
+    setComicInfo({})
+  }
+
+  const observer = useRef()
 
   const prevformat = useRef()
 
@@ -101,61 +111,38 @@ const App = () => {
   const lastComicRef = useGetLastNodeCallback(observer, loading, loadMore)
 
   const moreInfoHandler = (index) => {
-    console.log(data[index])
-
-    setOpen(true)
+    setComicInfo(data.results[index])
+    console.log('comicInfo', data.results[index].dates[0].date)
+    console.log('comicInfo', data.results[index])
+    handleOpenModal()
   }
 
   return (
     <>
       <TopBarMenu />
-      {open}
+
+      {openModal && (
+        <InfoModal
+          open={openModal}
+          comic={comicInfo}
+          handleClose={handleCloseModal}
+        />
+      )}
 
       <Container maxWidth="xl">
         <MainBreadcrumbs selectedFilter={format} />
 
-        <Grid
-          container
-          spacing={'18px'}
-          alignItems="stretch"
-          style={{ margin: '0 auto' }}
-        >
+        <Grid container spacing={'18px'} alignItems="stretch">
           {results.length > 0 &&
             results.map((comic, index) => (
-              <Grid
-                item
-                xs={6}
-                xl={2}
+              <ComicCard
                 key={comic.id.toString()}
-                sx={{ padding: 0 }}
-              >
-                <Paper
-                  sx={{ height: '100%' }}
-                  {...(index === data.results.length - 1
-                    ? { ref: lastComicRef }
-                    : null)}
-                >
-                  {comic.id.toString()}
-                  <img
-                    alt={comic.title + ' | Marvel Comics'}
-                    src={
-                      comic.thumbnail.path +
-                      '/portrait_fantastic.' +
-                      comic.thumbnail.extension
-                    }
-                  />
-
-                  <h3>{comic.title}</h3>
-                  <button onClick={() => moreInfoHandler(index)}>
-                    More info
-                  </button>
-                  <p>
-                    {comic?.prices.length > 1
-                      ? getLowestPrice(comic.prices)
-                      : comic?.prices[0].price}
-                  </p>
-                </Paper>
-              </Grid>
+                comic={comic}
+                comicIndex={index}
+                comicsTotal={results.length}
+                lastComicRef={lastComicRef}
+                moreInfoHandler={moreInfoHandler}
+              />
             ))}
           {loading && (
             <Grid

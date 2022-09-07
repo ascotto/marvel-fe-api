@@ -11,13 +11,17 @@ import Logo from './Logo'
 
 const MobileMenu = ({ menuItems: menu }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const { setApiParams } = useContext(GlobalApiParamsState)
+  const { format, setApiParams } = useContext(GlobalApiParamsState)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
   }
 
-  const handleCloseNavMenu = (menuId) => {
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
+  }
+
+  const handleFilterComics = (menuId) => {
     setApiParams({ format: menuId, offset: 0 })
     setAnchorElNav(null)
   }
@@ -46,6 +50,8 @@ const MobileMenu = ({ menuItems: menu }) => {
       <Menu
         id="menu-appbar"
         anchorEl={anchorElNav}
+        className="mui-fixed"
+        disableScrollLock={true}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -58,12 +64,20 @@ const MobileMenu = ({ menuItems: menu }) => {
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
         sx={{
+          position: 'absolute',
           display: { xs: 'block', md: 'none' },
         }}
       >
         {menu.map((menu) => (
-          <MenuItem key={menu.id} onClick={() => handleCloseNavMenu(menu.id)}>
-            <Typography textAlign="center">{menu.title}</Typography>
+          <MenuItem key={menu.id} onClick={() => handleFilterComics(menu.id)}>
+            <Typography
+              className={['menu-item', format === menu.id ? 'active' : ''].join(
+                ' ',
+              )}
+              textAlign="center"
+            >
+              {menu.title}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>

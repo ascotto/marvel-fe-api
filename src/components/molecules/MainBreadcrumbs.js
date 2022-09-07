@@ -7,8 +7,8 @@ const MainBreadcrumbs = ({ selectedFilter }) => {
     <Breadcrumbs
       separator={<NavigateNextIcon fontSize="small" />}
       sx={{
-        mt: 2,
-        mb: 2,
+        mt: 2.5,
+        mb: 2.5,
       }}
     >
       <Typography>Home</Typography>

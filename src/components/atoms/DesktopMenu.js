@@ -21,9 +21,12 @@ const DesktopMenu = ({ menuItems: menu }) => {
         <Logo />
         {menu.map((menu, index) => (
           <Button
+            className={['menu-item', format === menu.id ? 'active' : ''].join(
+              ' ',
+            )}
             key={index}
             sx={{ my: 2, color: 'white', display: 'block' }}
-            style={{ color: format === menu.id ? '#DD2C2C' : '#FFF' }}
+            
             onClick={() => setApiParams({ format: menu.id, offset: 0 })}
             disableRipple
           >
