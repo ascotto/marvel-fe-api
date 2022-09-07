@@ -17,7 +17,11 @@ const MobileMenu = ({ menuItems: menu }) => {
     setAnchorElNav(event.currentTarget)
   }
 
-  const handleCloseNavMenu = (menuId) => {
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
+  }
+
+  const handleFilterComics = (menuId) => {
     setApiParams({ format: menuId, offset: 0 })
     setAnchorElNav(null)
   }
@@ -62,8 +66,10 @@ const MobileMenu = ({ menuItems: menu }) => {
         }}
       >
         {menu.map((menu) => (
-          <MenuItem key={menu.id} onClick={() => handleCloseNavMenu(menu.id)}>
-            <Typography textAlign="center">{menu.title}</Typography>
+          <MenuItem key={menu.id} onClick={() => handleFilterComics(menu.id)}>
+            <Typography className="menu-item" textAlign="center">
+              {menu.title}
+            </Typography>
           </MenuItem>
         ))}
       </Menu>
