@@ -27,6 +27,53 @@ const theme = createTheme({
   },
 
   components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          '&.comic-card': {
+            border: '2px solid #1D1D1D',
+            borderaRadius: '5px',
+            padding: '12px',
+            height: '100%',
+
+            '& .comic-image': {
+              maxWidth: '100%',
+              height: '242px',
+              display: 'block',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              marginBottom: '1rem',
+            },
+
+            '& .card-title': {
+              fontWeight: 700,
+              color: '#1D1D1D',
+              fontSize: '0.9375rem',
+              lineHeight: '1.1875rem',
+              minHeight: '2.375rem',
+            },
+
+            '& .price-info': {
+              fontSize: '1.1875rem',
+              fontWeight: 700,
+              color: '#1D1D1D',
+            },
+
+            '& .more-info': {
+              fontWeight: 700,
+              textTransform: 'none',
+              display: 'block',
+              margin: '0 auto',
+              borderaRadius: '5px',
+              fontSize: '1.0625rem',
+              padding: '0.25rem 2rem',
+              backgroundColor: '#DD2C2C',
+            },
+          },
+        },
+      },
+    },
+
     MuiBreadcrumbs: {
       styleOverrides: {
         root: {

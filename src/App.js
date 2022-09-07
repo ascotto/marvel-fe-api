@@ -1,7 +1,13 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { urlWithParams, getLowestPrice } from './utility'
 import Endpoints from './constants/endpoints'
-import { CircularProgress, Grid, Paper } from '@mui/material'
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Paper,
+  Typography,
+} from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
@@ -116,6 +122,16 @@ const App = () => {
     handleOpenModal()
   }
 
+  const displaPrice = (prices) => {
+    const price = getLowestPrice(prices)
+
+    if (prices[0].price === 0) {
+      return 'N/A'
+    } else {
+      return `${price} €`
+    }
+  }
+
   return (
     <>
       <TopBarMenu />
@@ -142,14 +158,15 @@ const App = () => {
                 sx={{ padding: 0 }}
               >
                 <Paper
-                  sx={{ height: '100%' }}
+                  className="comic-card"
+                  elevation={0}
                   {...(index === data.results.length - 1
                     ? { ref: lastComicRef }
                     : null)}
                 >
-                  {comic.id.toString()}
                   <img
                     alt={comic.title + ' | Marvel Comics'}
+                    className={'comic-image'}
                     src={
                       comic.thumbnail.path +
                       '/portrait_fantastic.' +
@@ -157,15 +174,32 @@ const App = () => {
                     }
                   />
 
-                  <h3>{comic.title}</h3>
-                  <button onClick={() => moreInfoHandler(index)}>
+                  <Typography
+                    variant="h3"
+                    textAlign="center"
+                    className="card-title"
+                    gutterBottom
+                  >
+                    {comic.title}
+                  </Typography>
+
+                  <Typography
+                    variant="subtitle2"
+                    textAlign="center"
+                    className="price-info"
+                    gutterBottom
+                  >
+                    {displaPrice(comic.prices)}
+                  </Typography>
+
+                  <Button
+                    className="more-info"
+                    variant="contained"
+                    disableElevation
+                    onClick={() => moreInfoHandler(index)}
+                  >
                     More info
-                  </button>
-                  <p>
-                    {comic?.prices.length > 1
-                      ? getLowestPrice(comic.prices)
-                      : comic?.prices[0].price}
-                  </p>
+                  </Button>
                 </Paper>
               </Grid>
             ))}
