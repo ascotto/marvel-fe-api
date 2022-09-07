@@ -50,6 +50,8 @@ const MobileMenu = ({ menuItems: menu }) => {
       <Menu
         id="menu-appbar"
         anchorEl={anchorElNav}
+        className="mui-fixed"
+        disableScrollLock={true}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -62,6 +64,7 @@ const MobileMenu = ({ menuItems: menu }) => {
         open={Boolean(anchorElNav)}
         onClose={handleCloseNavMenu}
         sx={{
+          position: 'absolute',
           display: { xs: 'block', md: 'none' },
         }}
       >
