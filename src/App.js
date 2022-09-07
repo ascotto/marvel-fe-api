@@ -131,12 +131,7 @@ const App = () => {
       <Container maxWidth="xl">
         <MainBreadcrumbs selectedFilter={format} />
 
-        <Grid
-          container
-          spacing={'18px'}
-          alignItems="stretch"
-          style={{ margin: '0 auto' }}
-        >
+        <Grid container spacing={'18px'} alignItems="stretch">
           {results.length > 0 &&
             results.map((comic, index) => (
               <Grid

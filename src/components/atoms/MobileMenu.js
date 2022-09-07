@@ -11,7 +11,7 @@ import Logo from './Logo'
 
 const MobileMenu = ({ menuItems: menu }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const { setApiParams } = useContext(GlobalApiParamsState)
+  const { format, setApiParams } = useContext(GlobalApiParamsState)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -70,7 +70,12 @@ const MobileMenu = ({ menuItems: menu }) => {
       >
         {menu.map((menu) => (
           <MenuItem key={menu.id} onClick={() => handleFilterComics(menu.id)}>
-            <Typography className="menu-item" textAlign="center">
+            <Typography
+              className={['menu-item', format === menu.id ? 'active' : ''].join(
+                ' ',
+              )}
+              textAlign="center"
+            >
               {menu.title}
             </Typography>
           </MenuItem>
