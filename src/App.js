@@ -1,19 +1,14 @@
 import { useState, useEffect, useContext, useRef } from 'react'
-import { urlWithParams, getLowestPrice } from './utility'
+import { urlWithParams } from './utility'
 import Endpoints from './constants/endpoints'
-import {
-  Button,
-  CircularProgress,
-  Grid,
-  Paper,
-  Typography,
-} from '@mui/material'
+import { CircularProgress, Grid } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsState } from './store/params/params.state'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
 import { InfoModal } from './components/molecules/Modal'
+import ComicCard from './components/molecules/ComicCard'
 
 const App = () => {
   // Api
@@ -122,16 +117,6 @@ const App = () => {
     handleOpenModal()
   }
 
-  const displaPrice = (prices) => {
-    const price = getLowestPrice(prices)
-
-    if (prices[0].price === 0) {
-      return 'N/A'
-    } else {
-      return `${price} €`
-    }
-  }
-
   return (
     <>
       <TopBarMenu />
@@ -150,58 +135,14 @@ const App = () => {
         <Grid container spacing={'18px'} alignItems="stretch">
           {results.length > 0 &&
             results.map((comic, index) => (
-              <Grid
-                item
-                xs={6}
-                xl={2}
+              <ComicCard
                 key={comic.id.toString()}
-                sx={{ padding: 0 }}
-              >
-                <Paper
-                  className="comic-card"
-                  elevation={0}
-                  {...(index === data.results.length - 1
-                    ? { ref: lastComicRef }
-                    : null)}
-                >
-                  <img
-                    alt={comic.title + ' | Marvel Comics'}
-                    className={'comic-image'}
-                    src={
-                      comic.thumbnail.path +
-                      '/portrait_fantastic.' +
-                      comic.thumbnail.extension
-                    }
-                  />
-
-                  <Typography
-                    variant="h3"
-                    textAlign="center"
-                    className="card-title"
-                    gutterBottom
-                  >
-                    {comic.title}
-                  </Typography>
-
-                  <Typography
-                    variant="subtitle2"
-                    textAlign="center"
-                    className="price-info"
-                    gutterBottom
-                  >
-                    {displaPrice(comic.prices)}
-                  </Typography>
-
-                  <Button
-                    className="more-info"
-                    variant="contained"
-                    disableElevation
-                    onClick={() => moreInfoHandler(index)}
-                  >
-                    More info
-                  </Button>
-                </Paper>
-              </Grid>
+                comic={comic}
+                comicIndex={index}
+                comicsTotal={results.length}
+                lastComicRef={lastComicRef}
+                moreInfoHandler={moreInfoHandler}
+              />
             ))}
           {loading && (
             <Grid
