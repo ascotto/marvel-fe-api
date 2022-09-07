@@ -27,6 +27,20 @@ const theme = createTheme({
   },
 
   components: {
+    MuiBox: {
+      styleOverrides: {
+        root: {
+          '&.modal-info': {
+            backgroundColor: '#1D1D1D',
+
+            '& .modal-title': {
+              color: 'red',
+            },
+          },
+        },
+      },
+    },
+
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -64,6 +78,50 @@ const theme = createTheme({
               textTransform: 'none',
               display: 'block',
               margin: '0 auto',
+              borderaRadius: '5px',
+              fontSize: '1.0625rem',
+              padding: '0.25rem 2rem',
+              backgroundColor: '#DD2C2C',
+            },
+          },
+
+          '&.modal-info': {
+            position: 'relative',
+
+            '& strong': {
+              color: '#1D1D1D',
+            },
+
+        
+
+            '& .modal-title': {
+              fontWeight: 700,
+              fontSize: '1.0625rem',
+              color: '#1D1D1D',
+            },
+
+            '& ul': {
+              padding: 0,
+              listStyle: 'none',
+              fontWeight: 400,
+              fontSize: '0.9375rem',
+
+              '& li': {
+                lineHeight: '1.5625rem',
+              },
+            },
+
+            '& .price-info': {
+              fontSize: '1.1875rem',
+              fontWeight: 700,
+              color: '#1D1D1D',
+            },
+
+            '& .close-modal': {
+              float: 'right',
+              color: '#FFFFFF',
+              fontWeight: 700,
+              textTransform: 'none',
               borderaRadius: '5px',
               fontSize: '1.0625rem',
               padding: '0.25rem 2rem',
