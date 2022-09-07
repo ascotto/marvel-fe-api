@@ -114,6 +114,7 @@ const theme = createTheme({
             textTransform: 'None',
             fontSize: '1.125rem',
             color: '#FFFFFF',
+            marginLeft: '60px',
 
             '&.active': {
               color: '#DD2C2C',
