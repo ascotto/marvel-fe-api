@@ -1,6 +1,6 @@
-import { Button, Paper, Typography, Grid } from '@mui/material'
+import { Button, Paper, Typography, Grid, IconButton } from '@mui/material'
 import propTypes from 'prop-types'
-import { getLowestPrice } from '../../utility'
+import { displayPrice } from '../../utility'
 
 const ComicCard = ({
   comic,
@@ -9,18 +9,16 @@ const ComicCard = ({
   lastComicRef,
   moreInfoHandler,
 }) => {
-  const displaPrice = (prices) => {
-    const price = getLowestPrice(prices)
-
-    if (prices[0].price === 0) {
-      return 'N/A'
-    } else {
-      return `${price} €`
-    }
-  }
-
   return (
-    <Grid item xs={6} xl={2} key={comic.id.toString()} sx={{ padding: 0 }}>
+    <Grid
+      item
+      xs={6}
+      sm={4}
+      md={3}
+      xl={2}
+      key={comic.id.toString()}
+      sx={{ padding: 0 }}
+    >
       <Paper
         className="comic-card"
         elevation={0}
@@ -51,7 +49,7 @@ const ComicCard = ({
           className="price-info"
           gutterBottom
         >
-          {displaPrice(comic.prices)}
+          {displayPrice(comic.prices)}
         </Typography>
 
         <Button
