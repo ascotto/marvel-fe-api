@@ -2,16 +2,28 @@ import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 
+const fontFamily = [
+  '"Quicksand"',
+  '-apple-system',
+  'BlinkMacSystemFont',
+  '"Segoe UI"',
+  '"Helvetica Neue"',
+  'Arial',
+  'sans-serif',
+].join(',')
+
 const theme = createTheme({
   body: {
     overflowX: 'hidden',
-    padding: 0,
+    fontFamily: 'Quicksand, sans-serif',
   },
 
   typography: {
-    fontFamily: 'Quicksand, sans-serif',
-    fontWeight: 400,
-    button: {},
+    fontFamily: fontFamily,
+    allVariants: {
+      fontFamily: fontFamily,
+      fontWeight: 400,
+    },
   },
 
   components: {
@@ -24,6 +36,7 @@ const theme = createTheme({
           '& .MuiTypography-root': {
             fontWeight: 'bold',
             fontSize: '1.125rem',
+            color: '#828282',
           },
         },
       },
@@ -31,11 +44,16 @@ const theme = createTheme({
 
     MuiTypography: {
       styleOverrides: {
+        fontFamily: 'Quicksand, sans-serif',
         root: {
           '&.menu-item': {
             fontWeight: 'bold',
             textTransform: 'None',
             fontSize: '1.125rem',
+
+            '&.active': {
+              color: '#DD2C2C',
+            },
           },
         },
       },
@@ -48,6 +66,11 @@ const theme = createTheme({
             fontWeight: 'bold',
             textTransform: 'None',
             fontSize: '1.125rem',
+            color: '#FFFFFF',
+
+            '&.active': {
+              color: '#DD2C2C',
+            },
           },
         },
       },
