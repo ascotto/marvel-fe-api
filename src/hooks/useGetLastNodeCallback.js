@@ -9,7 +9,6 @@ export const useGetLastNodeCallback = (observer, loading, callback) =>
 
       observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          console.log('end  of page')
           callback()
         }
       })

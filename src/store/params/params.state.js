@@ -16,17 +16,11 @@ export const API_PARAMS_STATE = {
 export const GlobalApiParamsState = createContext()
 GlobalApiParamsState.displayName = 'ApiParamsState'
 
+
 const ApiParamsReducer = (state, action) => {
   switch (action.type) {
     case 'SET_API_PARAMS':
       const oldState = JSON.parse(JSON.stringify(state))
-
-      const newState = {
-        ...oldState,
-        ...action.payload,
-      }
-
-      console.log(newState)
 
       return {
         ...oldState,
