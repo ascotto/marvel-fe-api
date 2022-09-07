@@ -1,26 +1,32 @@
 import ReactDOM from 'react-dom'
-import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
 import propTypes from 'prop-types'
-import { getLowestPrice } from '../../utility'
+import { displayPrice } from '../../utility'
+import { Paper, IconButton, Grid } from '@mui/material'
+import { Close } from '@mui/icons-material'
+import { styled } from '@mui/material/styles'
 
-const style = {
+const modalStyle = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 600,
+  width: { xs: '100%', sm: '642px' },
   bgcolor: 'background.paper',
   border: '1px solid #1D1D1D',
   borderRadius: ' 5px',
   boxShadow: 24,
   p: 1.5,
 }
-const getCharacters = (characters) => {
-  return characters.map((character) => character.name).join(', ')
-}
+
+const Img = styled('img')({
+  margin: '0 auto',
+  display: 'block',
+  maxWidth: '100%',
+  maxHeight: '246px',
+})
 
 export const BasicModal = ({ open, handleClose, comic }) => {
   const chars =
@@ -44,48 +50,102 @@ export const BasicModal = ({ open, handleClose, comic }) => {
   console.log('chars', comic.characters.items.length)
 
   return (
-    <div>
+    <>
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <img
-            alt={comic.title + ' | Marvel Comics'}
-            src={
-              comic.thumbnail.path +
-              '/portrait_fantastic.' +
-              comic.thumbnail.extension
-            }
-            style={{
-              float: 'left',
-              marginRight: '20px',
+        <Paper sx={modalStyle} className="modal-info">
+          <IconButton
+            onClick={handleClose}
+            sx={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              color: '#DD2C2C',
             }}
-          />
+          >
+            <Close />
+          </IconButton>
 
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            {comic.title}
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-          </Typography>
-          <ul>
-            <li>
-              Year of release: {new Date(comic.dates[0].date).getFullYear()}
-            </li>
-            <li>Format: {comic.format}</li>
-            <li>Pages: {comic.pageCount}</li>
-            <li>Characters: {chars}</li>
-            <li>Creators: {creators}</li>
-            <li>DiamondCode: {comic.diamondCode}</li>
-          </ul>
-          <span>{getLowestPrice(comic.prices)} EUR</span>
-          <Button onClick={handleClose}>Close</Button>
-        </Box>
+          <Grid container spacing={2} justifyContent="center">
+            <Grid item>
+              <Img
+                alt={comic.title + ' | Marvel Comics'}
+                src={
+                  comic.thumbnail.path +
+                  '/portrait_fantastic.' +
+                  comic.thumbnail.extension
+                }
+              />
+            </Grid>
+            <Grid item xs={12} sm container>
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                className="modal-title"
+              >
+                {comic.title}
+              </Typography>
+
+              <ul>
+                <li>
+                  <strong>Year of release: </strong>
+                  {new Date(comic.dates[0].date).getFullYear()}
+                </li>
+                <li>
+                  <strong>Format: </strong>
+                  {comic.format}
+                </li>
+                <li>
+                  <strong>Pages: </strong>
+                  {comic.pageCount}
+                </li>
+                <li>
+                  <strong>Characters: </strong>
+                  {chars}
+                </li>
+                <li>
+                  <strong>Creators: </strong>
+                  {creators}
+                </li>
+                <li>
+                  <strong>DiamondCode: </strong>
+                  {comic.diamondCode || 'N/A'}
+                </li>
+              </ul>
+
+              <Grid
+                container
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                spacing={0}
+              >
+                <Grid item>
+                  <span className="price-info">
+                    {displayPrice(comic.prices)}
+                  </span>
+                </Grid>
+                <Grid item>
+                  <Button
+                    className="close-modal"
+                    disableFocusRipple
+                    disableElevation
+                    onClick={handleClose}
+                  >
+                    Close
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Paper>
       </Modal>
-    </div>
+    </>
   )
 }
 
