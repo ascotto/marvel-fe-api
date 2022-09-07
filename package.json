@@ -24,6 +24,7 @@
     "build": "REACT_APP_ENV=production react-scripts build",
     "local": "REACT_APP_ENV=local react-scripts start",
     "develop": "REACT_APP_ENV=development react-scripts start",
+    "deploy": "vercel --prod",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
