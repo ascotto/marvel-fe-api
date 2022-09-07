@@ -4,7 +4,7 @@ import Endpoints from './constants/endpoints'
 import { CircularProgress, Grid } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
-import { GlobalApiParamsState } from './store/params/params.state'
+import { GlobalApiParamsStore } from './store/params/params.store'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
 import { InfoModal } from './components/molecules/Modal'
@@ -16,7 +16,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const { results, total } = data
   const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
-    useContext(GlobalApiParamsState)
+    useContext(GlobalApiParamsStore)
 
   // Modal
   const [openModal, setOpenModal] = useState(false)

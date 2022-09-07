@@ -6,12 +6,12 @@ import IconButton from '@mui/material/IconButton'
 import Typography from '@mui/material/Typography'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
-import { GlobalApiParamsState } from '../../store/params/params.state'
+import { GlobalApiParamsStore } from '../../store/params/params.store'
 import Logo from './Logo'
 
 const MobileMenu = ({ menuItems: menu }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null)
-  const { format, setApiParams } = useContext(GlobalApiParamsState)
+  const { format, setApiParams } = useContext(GlobalApiParamsStore)
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)

@@ -3,7 +3,7 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { StyledEngineProvider } from '@mui/material'
-import { ApiParamsProvider } from './store/params/params.state'
+import { ApiParamsProvider } from './store/params/params.provider'
 import MainTheme from './themes/MainTheme'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
