@@ -21,6 +21,7 @@ const DesktopMenu = ({ menuItems: menu }) => {
         <Logo />
         {menu.map((menu, index) => (
           <Button
+            className="menu-item"
             key={index}
             sx={{ my: 2, color: 'white', display: 'block' }}
             style={{ color: format === menu.id ? '#DD2C2C' : '#FFF' }}
