@@ -2,11 +2,11 @@ import { useContext } from 'react'
 import ProtpTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import { GlobalApiParamsState } from '../../store/params/params.state'
+import { GlobalApiParamsStore } from '../../store/params/params.store'
 import Logo from './Logo'
 
 const DesktopMenu = ({ menuItems: menu }) => {
-  const { format, setApiParams } = useContext(GlobalApiParamsState)
+  const { format, setApiParams } = useContext(GlobalApiParamsStore)
 
   return (
     <>

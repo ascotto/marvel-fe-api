@@ -4,7 +4,7 @@ import Endpoints from './constants/endpoints'
 import { CircularProgress, Grid } from '@mui/material'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
-import { GlobalApiParamsState } from './store/params/params.state'
+import { GlobalApiParamsStore } from './store/params/params.store'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
 import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
 import { InfoModal } from './components/molecules/Modal'
@@ -16,7 +16,7 @@ const App = () => {
   const [loading, setLoading] = useState(false)
   const { results, total } = data
   const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
-    useContext(GlobalApiParamsState)
+    useContext(GlobalApiParamsStore)
 
   // Modal
   const [openModal, setOpenModal] = useState(false)
@@ -28,8 +28,10 @@ const App = () => {
   }
 
   const observer = useRef()
-
   const prevformat = useRef()
+
+  const loadingOnFilterChange =
+    data.results.length > 0 && prevformat.current !== format
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,8 +48,6 @@ const App = () => {
         format,
         orderBy,
       })
-
-      console.log('fetchURL', fetchURL.split('&'))
 
       // Fetch data from API
       const response = await fetch(fetchURL)
@@ -78,7 +78,7 @@ const App = () => {
         )
 
         setData({ results: [...oldData, ...newData], total: data.total })
-      } else if (data.results.length > 0 && prevformat.current !== format) {
+      } else if (loadingOnFilterChange) {
         // format change
         setData({ results: response.results, total: response.total })
       }
@@ -94,10 +94,6 @@ const App = () => {
     fetchData()
   }, [offset, format])
 
-  useEffect(() => {
-    console.log(data)
-  }, [data])
-
   const loadMore = () => {
     if (loading) return
 
@@ -112,8 +108,6 @@ const App = () => {
 
   const moreInfoHandler = (index) => {
     setComicInfo(data.results[index])
-    console.log('comicInfo', data.results[index].dates[0].date)
-    console.log('comicInfo', data.results[index])
     handleOpenModal()
   }
 
@@ -132,8 +126,24 @@ const App = () => {
       <Container maxWidth="xl">
         <MainBreadcrumbs selectedFilter={format} />
 
+        {loadingOnFilterChange && (
+          <Grid
+            item
+            xs={12}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              height: 200,
+            }}
+          >
+            <CircularProgress color="inherit" />
+          </Grid>
+        )}
+
         <Grid container spacing={'18px'} alignItems="stretch">
           {results.length > 0 &&
+            !loadingOnFilterChange &&
             results.map((comic, index) => (
               <ComicCard
                 key={comic.id.toString()}
@@ -144,7 +154,7 @@ const App = () => {
                 moreInfoHandler={moreInfoHandler}
               />
             ))}
-          {loading && (
+          {loading && !loadingOnFilterChange && (
             <Grid
               item
               xs={12}

@@ -47,7 +47,6 @@ export const BasicModal = ({ open, handleClose, comic }) => {
           .join(', ')
       : 'No creators found'
 
-  console.log('chars', comic.characters.items.length)
 
   return (
     <>
