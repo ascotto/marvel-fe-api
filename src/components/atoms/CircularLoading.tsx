@@ -1,7 +1,6 @@
 import { CircularProgress, Grid } from '@mui/material'
-import propTypes from 'prop-types'
 
-const CircularLoading = ({ label }) => {
+const CircularLoading: React.FC<{label?: string}> = ({ label }) => {
   return (
     <Grid container justifyContent="center" alignItems="center">
       <Grid
@@ -21,8 +20,7 @@ const CircularLoading = ({ label }) => {
   )
 }
 
-CircularLoading.propTypes = {
-  label: propTypes.string,
-}
+
+
 
 export default CircularLoading

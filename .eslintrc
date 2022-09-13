@@ -65,7 +65,7 @@
     "import/dynamic-import-chunkname": "error",
     "react/no-unused-state": "error",
     "react/prop-types": [
-      "error",
+      "off",
       {
         "ignore": [""]
       }
