@@ -10,7 +10,8 @@
 - Implemented responsive design
 - Applications is working on Vercel: https://marvel-api-six-sigma.vercel.app/
 - There should be no errors in the console or visual bug
-
+- Error handling of the API call
+- Fetch components are reusable and composable
 
 ## The Bad
 - The private key is exposed in the codebase, which is not a good practice (I did it for the sake of the test)
@@ -20,7 +21,6 @@
 - No test coverage
 
 ## The Ugly
-- The fetch request do not handle errors, and the error handling is not implemented, so if the API fails the app will show the spinner forever with no error message, in a real worl scenario there would be an error handling functionality for the fetch request
 - If you find more quirks please let me know
 
 ## Challenges
