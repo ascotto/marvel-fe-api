@@ -1,4 +1,4 @@
-import { Button, Paper, Typography, Grid, IconButton } from '@mui/material'
+import { Button, Paper, Typography, Grid } from '@mui/material'
 import propTypes from 'prop-types'
 import { displayPrice } from '../../utility'
 
