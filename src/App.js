@@ -1,22 +1,18 @@
-import { useState, useEffect, useContext, useRef } from 'react'
-import { urlWithParams } from './utility'
-import Endpoints from './constants/endpoints'
-import { CircularProgress, Grid } from '@mui/material'
+import { useState, useContext, useRef } from 'react'
+import Grid from '@mui/material/Grid'
 import TopBarMenu from './components/molecules/TopBarMenu'
 import { Container } from '@mui/system'
 import { GlobalApiParamsStore } from './store/params/params.store'
 import MainBreadcrumbs from './components/molecules/MainBreadcrumbs'
-import { useGetLastNodeCallback } from './hooks/useGetLastNodeCallback'
+import { useGetRefCallback } from './hooks/useGetRefCallback'
 import { InfoModal } from './components/molecules/Modal'
 import ComicCard from './components/molecules/ComicCard'
+import CircularLoading from './components/atoms/CircularLoading'
+import { useComicsApi } from './hooks/useComicsApi'
+import { Alert } from '@mui/material'
 
 const App = () => {
-  // Api
-  const [data, setData] = useState({ results: [], total: null })
-  const [loading, setLoading] = useState(false)
-  const { results, total } = data
-  const { apikey, offset, ts, hash, orderBy, format, setApiParams } =
-    useContext(GlobalApiParamsStore)
+  const { offset, format, setApiParams } = useContext(GlobalApiParamsStore)
 
   // Modal
   const [openModal, setOpenModal] = useState(false)
@@ -28,74 +24,12 @@ const App = () => {
   }
 
   const observer = useRef()
-  const prevformat = useRef()
 
-  const loadingOnFilterChange =
-    data.results.length > 0 && prevformat.current !== format
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const apiUrl = Endpoints.Comics.Url.Base
-
-      // show spinner
-      setLoading(true)
-
-      const fetchURL = urlWithParams(apiUrl, {
-        apikey,
-        offset,
-        ts,
-        hash,
-        format,
-        orderBy,
-      })
-
-      // Fetch data from API
-      const response = await fetch(fetchURL)
-        .then((res) => res.json())
-        .then((res) => {
-          return res.data
-        })
-        .then((res) => res)
-
-      // Handle first load, infinite load, and format change
-      if (
-        data.results.length === 0 &&
-        typeof observer.current === 'undefined'
-      ) {
-        // first load
-        setData({ results: response.results, total: response.total })
-      } else if (
-        data.results.length > 0 &&
-        prevformat.current === format &&
-        data.results.length + 20 <= data.total
-      ) {
-        // infinite load
-        const oldData = JSON.parse(JSON.stringify(data.results))
-
-        // remove duplicates
-        const newData = response.results.filter(
-          (result) => !oldData.some((old) => old.id === result.id),
-        )
-
-        setData({ results: [...oldData, ...newData], total: data.total })
-      } else if (loadingOnFilterChange) {
-        // format change
-        setData({ results: response.results, total: response.total })
-      }
-
-      // hide spinner
-      setLoading(false)
-
-      // set prevformat
-      prevformat.current = format
-    }
-
-    // fetch data
-    fetchData()
-  }, [offset, format])
+  const { loadingStates, error, results, total } = useComicsApi(observer)
+  const { isLoading, loadingOnScroll, loadingOnFilterChange } = loadingStates
 
   const loadMore = () => {
-    if (loading) return
+    if (isLoading) return
 
     if (offset + 20 <= total) {
       setApiParams({ offset: offset + 20 })
@@ -104,10 +38,13 @@ const App = () => {
     }
   }
 
-  const lastComicRef = useGetLastNodeCallback(observer, loading, loadMore)
+  const lastComicRef = useGetRefCallback(observer, loadMore, [
+    isLoading,
+    results,
+  ])
 
   const moreInfoHandler = (index) => {
-    setComicInfo(data.results[index])
+    setComicInfo(results[index])
     handleOpenModal()
   }
 
@@ -126,49 +63,35 @@ const App = () => {
       <Container maxWidth="xl">
         <MainBreadcrumbs selectedFilter={format} />
 
-        {loadingOnFilterChange && (
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 200,
-            }}
-          >
-            <CircularProgress color="inherit" />
-          </Grid>
-        )}
+        {(isLoading || loadingOnFilterChange) && !error && <CircularLoading />}
 
         <Grid container spacing={'18px'} alignItems="stretch">
+          {!isLoading && error && (
+            <Grid item xs={12}>
+              <Alert severity="error">
+                Could not reach the server API. Please contact
+                andrea@frontendbyte.com
+              </Alert>
+            </Grid>
+          )}
+
           {results.length > 0 &&
-            !loadingOnFilterChange &&
+            !error &&
+            (!isLoading || !loadingOnFilterChange) &&
             results.map((comic, index) => (
               <ComicCard
                 key={comic.id.toString()}
                 comic={comic}
                 comicIndex={index}
                 comicsTotal={results.length}
-                lastComicRef={lastComicRef}
+                lastComicRef={
+                  results.length + 20 <= total ? lastComicRef : undefined
+                }
                 moreInfoHandler={moreInfoHandler}
               />
             ))}
-          {loading && !loadingOnFilterChange && (
-            <Grid
-              item
-              xs={12}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 200,
-              }}
-            >
-              <CircularProgress color="inherit" />
-            </Grid>
-          )}
         </Grid>
+        {loadingOnScroll && !error && <CircularLoading />}
       </Container>
     </>
   )
