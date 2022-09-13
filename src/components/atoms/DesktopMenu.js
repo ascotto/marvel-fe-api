@@ -26,7 +26,6 @@ const DesktopMenu = ({ menuItems: menu }) => {
             )}
             key={index}
             sx={{ my: 2, color: 'white', display: 'block' }}
-            
             onClick={() => setApiParams({ format: menu.id, offset: 0 })}
             disableRipple
           >

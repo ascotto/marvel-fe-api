@@ -1,4 +1,4 @@
-import { CURRENT_ENV, ENVIRONMENTS } from '../config/enviroments'
+import { CURRENT_ENV, ENVIRONMENTS } from '../config/environments'
 
 const API_VERSION = 1
 const API_BASE = `v${API_VERSION}`

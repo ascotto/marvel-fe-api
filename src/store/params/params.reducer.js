@@ -1,5 +1,4 @@
-import {paramsActionTypes as actions} from './params.actions'
-
+import { paramsActionTypes as actions } from './params.actions'
 
 export const ApiParamsReducer = (state, action) => {
   switch (action.type) {
