@@ -1,5 +1,4 @@
-import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
+import  { useContext,useState } from 'react'
 import Box from '@mui/material/Box'
 import MenuIcon from '@mui/icons-material/Menu'
 import IconButton from '@mui/material/IconButton'
@@ -9,11 +8,13 @@ import MenuItem from '@mui/material/MenuItem'
 import { GlobalApiParamsStore } from '../../store/params/params.store'
 import Logo from './Logo'
 
-const MobileMenu = ({ menuItems: menu }) => {
-  const [anchorElNav, setAnchorElNav] = React.useState(null)
+import { MenuTS } from '../../types'
+
+const MobileMenu: React.FC<{menuItems: MenuTS[]}>  = ({ menuItems: menu }) => {
+  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
   const { format, setApiParams } = useContext(GlobalApiParamsStore)
 
-  const handleOpenNavMenu = (event) => {
+  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget)
   }
 
@@ -21,10 +22,12 @@ const MobileMenu = ({ menuItems: menu }) => {
     setAnchorElNav(null)
   }
 
-  const handleFilterComics = (menuId) => {
+  const handleFilterComics = (menuId: string) => {
     setApiParams({ format: menuId, offset: 0 })
     setAnchorElNav(null)
   }
+
+
 
   return (
     <Box
@@ -70,7 +73,7 @@ const MobileMenu = ({ menuItems: menu }) => {
       >
         {menu.map((menu) => (
           <MenuItem key={menu.id} onClick={() => handleFilterComics(menu.id)}>
-            <Typography
+             <Typography
               className={['menu-item', format === menu.id ? 'active' : ''].join(
                 ' ',
               )}
@@ -86,8 +89,6 @@ const MobileMenu = ({ menuItems: menu }) => {
   )
 }
 
-MobileMenu.propTypes = {
-  menuItems: PropTypes.array.isRequired,
-}
+
 
 export default MobileMenu

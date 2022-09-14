@@ -3,13 +3,10 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { GlobalApiParamsStore } from '../../store/params/params.store'
 import Logo from './Logo'
+import {MenuTS} from "../../types"
 
-type Menu ={
-  title: string,
-  id: number
-}
 
-const DesktopMenu: React.FC<{menuItems: Menu[]}> = ({ menuItems: menu }) => {
+const DesktopMenu: React.FC<{menuItems: MenuTS[]}> = ({ menuItems: menu }) => {
   const { format, setApiParams } = useContext(GlobalApiParamsStore)
 
   return (
