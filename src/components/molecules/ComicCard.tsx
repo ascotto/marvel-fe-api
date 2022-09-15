@@ -1,14 +1,32 @@
 import { Button, Paper, Typography, Fade, Grid } from '@mui/material'
-import propTypes from 'prop-types'
+import { ElementType } from 'react'
 import { displayPrice } from '../../utility'
 
-const ComicCard = ({
+
+type Comic ={
+  title: string
+  id: string,
+  thumbnail: {
+    path: string,
+    extension: string
+  },
+  prices: []
+}
+
+// TODO: fix type any for lastComicRef
+
+const ComicCard: React.FC<{comic: Comic, comicIndex: number, comicsTotal: number, lastComicRef: any, moreInfoHandler: Function    
+}> = ({
   comic,
   comicIndex,
   comicsTotal,
   lastComicRef,
   moreInfoHandler,
 }) => {
+
+
+  const passRef = comicIndex === comicsTotal - 1 ? lastComicRef : null;
+
   return (
     <Grid
       item
@@ -23,7 +41,8 @@ const ComicCard = ({
         <Paper
           className="comic-card"
           elevation={0}
-          {...(comicIndex === comicsTotal - 1 ? { ref: lastComicRef } : null)}
+          ref={passRef}
+
         >
           <img
             alt={comic.title + ' | Marvel Comics'}
@@ -67,12 +86,7 @@ const ComicCard = ({
   )
 }
 
-ComicCard.propTypes = {
-  comic: propTypes.object.isRequired,
-  comicIndex: propTypes.number.isRequired,
-  comicsTotal: propTypes.number.isRequired,
-  lastComicRef: propTypes.func,
-  moreInfoHandler: propTypes.func.isRequired,
-}
+
+
 
 export default ComicCard
