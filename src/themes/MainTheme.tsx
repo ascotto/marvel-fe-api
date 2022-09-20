@@ -1,6 +1,5 @@
 import { CssBaseline } from '@mui/material'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-import PropTypes from 'prop-types'
 
 const fontFamily = [
   '"Quicksand"',
@@ -13,11 +12,6 @@ const fontFamily = [
 ].join(',')
 
 const theme = createTheme({
-  body: {
-    overflowX: 'hidden',
-    fontFamily: 'Quicksand, sans-serif',
-  },
-
   typography: {
     fontFamily: fontFamily,
     allVariants: {
@@ -27,20 +21,6 @@ const theme = createTheme({
   },
 
   components: {
-    MuiBox: {
-      styleOverrides: {
-        root: {
-          '&.modal-info': {
-            backgroundColor: '#1D1D1D',
-
-            '& .modal-title': {
-              color: 'red',
-            },
-          },
-        },
-      },
-    },
-
     MuiPaper: {
       styleOverrides: {
         root: {
@@ -91,8 +71,6 @@ const theme = createTheme({
             '& strong': {
               color: '#1D1D1D',
             },
-
-        
 
             '& .modal-title': {
               fontWeight: 700,
@@ -149,8 +127,9 @@ const theme = createTheme({
 
     MuiTypography: {
       styleOverrides: {
-        fontFamily: 'Quicksand, sans-serif',
         root: {
+          fontFamily: 'Quicksand, sans-serif',
+
           '&.menu-item': {
             fontWeight: 'bold',
             textTransform: 'None',
@@ -184,16 +163,12 @@ const theme = createTheme({
   },
 })
 
-const MainTheme = ({ children }) => {
+const MainTheme: React.FC<{ children: JSX.Element }> = ({ children }) => {
   return (
     <CssBaseline>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </CssBaseline>
   )
-}
-
-MainTheme.propTypes = {
-  children: PropTypes.node.isRequired,
 }
 
 export default MainTheme
