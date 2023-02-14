@@ -5,7 +5,6 @@ import MobileMenu from '../atoms/MobileMenu'
 import DesktopMenu from '../atoms/DesktopMenu'
 import { MenuTS } from '../../types'
 
-
 const menu: MenuTS[] = [
   { id: '', title: 'All' },
   { id: 'comic', title: 'Comic' },

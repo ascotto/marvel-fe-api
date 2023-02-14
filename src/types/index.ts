@@ -14,3 +14,10 @@ interface ApiContextInterface {
 }
 
 export type { ApiContextInterface }
+
+// Generic Object Keys
+// returns an array of keys from an object with a generic type
+// generic object keys
+export const objectKeys = <Obj extends {}>(obj: Obj): (keyof Obj)[] => {
+  return Object.keys(obj) as (keyof Obj)[]
+}

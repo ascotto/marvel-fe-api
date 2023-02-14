@@ -1,9 +1,15 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 
-export const useGetRefCallback = (observer, callback, dependencies) =>
+// TODO - add types for observer
+
+export const useGetRefCallback = (
+  observer: any,
+  callback: Function,
+  dependencies: string[],
+) =>
   useCallback(
-    (node) => {
-      if (observer.current) observer.current.disconnect()
+    (node: JSX.Element) => {
+      if (observer?.current) observer.current.disconnect()
 
       observer.current = new IntersectionObserver(
         (entries) => {
@@ -15,6 +21,7 @@ export const useGetRefCallback = (observer, callback, dependencies) =>
       )
       if (node) observer.current.observe(node)
     },
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [...dependencies],
   )
