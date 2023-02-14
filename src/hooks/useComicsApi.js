@@ -57,17 +57,15 @@ export const useComicsApi = (observer) => {
       // infinite load
       // console.log('loadingOnScroll')
 
-      const oldData = JSON.parse(JSON.stringify(comics.results))
-
       // remove duplicates
       const newData = useFetch.data.results.filter(
-        (result) => !oldData.some((old) => old.id === result.id),
+        (result) => !comics.results.some((old) => old.id === result.id),
       )
 
-      setComics({
-        results: [...oldData, ...newData],
+      setComics((prevState) => ({
+        results: prevState.results.concat(newData),
         total: useFetch.data.total,
-      })
+      }))
     } else if (total === null && typeof observer.current === 'undefined') {
       // first load
       // console.log('first load')

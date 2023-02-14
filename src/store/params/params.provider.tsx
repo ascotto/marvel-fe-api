@@ -1,16 +1,16 @@
 import { useReducer } from 'react'
-import ProtpTypes from 'prop-types'
 import { ApiParamsReducer } from './params.reducer'
 import { API_PARAMS_STATE } from './params.state'
 import { paramsActionTypes as actions } from './params.actions'
 import { GlobalApiParamsStore } from './params.store'
+import { ApiContextInterface } from '../../types'
 
-export const ApiParamsProvider = ({ children }) => {
+export const ApiParamsProvider: React.FC<{children: JSX.Element}> = ({ children }) => {
   const [state, dispatch] = useReducer(ApiParamsReducer, API_PARAMS_STATE)
 
-  const value = {
+  const value: ApiContextInterface  = {
     ...state,
-    setApiParams: (params) => {
+    setApiParams: (params: object)  => {
       dispatch({ type: actions.SET_API_PARAMS, payload: params })
     },
   }
@@ -20,8 +20,4 @@ export const ApiParamsProvider = ({ children }) => {
       {children}
     </GlobalApiParamsStore.Provider>
   )
-}
-
-ApiParamsProvider.propTypes = {
-  children: ProtpTypes.node.isRequired,
 }

@@ -3,15 +3,16 @@ import Toolbar from '@mui/material/Toolbar'
 import Container from '@mui/material/Container'
 import MobileMenu from '../atoms/MobileMenu'
 import DesktopMenu from '../atoms/DesktopMenu'
+import { MenuTS } from '../../types'
 
-const menu = [
+const menu: MenuTS[] = [
   { id: '', title: 'All' },
   { id: 'comic', title: 'Comic' },
   { id: 'magazine', title: 'Magazine' },
   { id: 'digital comic', title: 'Digital Comic' },
 ]
 
-const TopBarMenu = () => {
+const TopBarMenu: React.FC = () => {
   return (
     <AppBar
       position="static"

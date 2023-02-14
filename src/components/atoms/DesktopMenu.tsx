@@ -1,11 +1,12 @@
 import { useContext } from 'react'
-import ProtpTypes from 'prop-types'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import { GlobalApiParamsStore } from '../../store/params/params.store'
 import Logo from './Logo'
+import {MenuTS} from "../../types"
 
-const DesktopMenu = ({ menuItems: menu }) => {
+
+const DesktopMenu: React.FC<{menuItems: MenuTS[]}> = ({ menuItems: menu }) => {
   const { format, setApiParams } = useContext(GlobalApiParamsStore)
 
   return (
@@ -38,8 +39,7 @@ const DesktopMenu = ({ menuItems: menu }) => {
   )
 }
 
-DesktopMenu.propTypes = {
-  menuItems: ProtpTypes.array.isRequired,
-}
+
+
 
 export default DesktopMenu

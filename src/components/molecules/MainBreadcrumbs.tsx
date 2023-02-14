@@ -1,8 +1,7 @@
 import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import { Breadcrumbs, Typography } from '@mui/material'
-import PropTypes from 'prop-types'
 
-const MainBreadcrumbs = ({ selectedFilter }) => {
+const MainBreadcrumbs: React.FC<{ selectedFilter: string}>  = ({ selectedFilter }) => {
   return (
     <Breadcrumbs
       separator={<NavigateNextIcon fontSize="small" />}
@@ -21,10 +20,6 @@ const MainBreadcrumbs = ({ selectedFilter }) => {
       )}
     </Breadcrumbs>
   )
-}
-
-MainBreadcrumbs.propTypes = {
-  selectedFilter: PropTypes.string.isRequired,
 }
 
 export default MainBreadcrumbs

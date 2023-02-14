@@ -6,7 +6,7 @@ export const ENVIRONMENTS = Object.freeze({
 
 export const CURRENT_ENV = `${process.env.REACT_APP_ENV}` || 'local'
 
-export const debug = () => {
+export const debug: () => boolean = () => {
   if (window.location.hash === '#debug') {
     return true
   } else {

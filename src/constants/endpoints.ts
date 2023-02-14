@@ -1,9 +1,9 @@
 import { CURRENT_ENV, ENVIRONMENTS } from '../config/environments'
 
-const API_VERSION = 1
-const API_BASE = `v${API_VERSION}`
+const API_VERSION: number = 1
+const API_BASE: string = `v${API_VERSION}`
 
-const Endpoints = {}
+const Endpoints: any = {}
 
 const Server = {
   [ENVIRONMENTS.local]: `https://gateway.marvel.com/`,
@@ -11,7 +11,7 @@ const Server = {
   [ENVIRONMENTS.production]: `https://gateway.marvel.com/`,
 }
 
-const ApiStages = {
+const ApiStages: any = {
   [ENVIRONMENTS.local]: `${Server[ENVIRONMENTS.local]}${API_BASE}`,
   [ENVIRONMENTS.development]: `${Server[ENVIRONMENTS.development]}${API_BASE}`,
   [ENVIRONMENTS.production]: `${Server[ENVIRONMENTS.production]}${API_BASE}`,

@@ -1,12 +1,14 @@
+
 import ReactDOM from 'react-dom'
 import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import Modal from '@mui/material/Modal'
-import propTypes from 'prop-types'
 import { displayPrice } from '../../utility'
 import { Paper, IconButton, Grid } from '@mui/material'
 import { Close } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
+import { ComicDetails } from '../../types/comics'
+
 
 const modalStyle = {
   position: 'absolute',
@@ -28,7 +30,9 @@ const Img = styled('img')({
   maxHeight: '246px',
 })
 
-export const BasicModal = ({ open, handleClose, comic }) => {
+
+
+export const BasicModal: React.FC<{open: boolean, handleClose: () => void, comic: ComicDetails}> = ({ open, handleClose, comic }) => {
   const chars =
     comic.characters.items.length > 0
       ? comic.characters.items
@@ -37,6 +41,7 @@ export const BasicModal = ({ open, handleClose, comic }) => {
           })
           .join(', ')
       : 'No characters found'
+
 
   const creators =
     comic.creators.items.length > 0
@@ -148,25 +153,16 @@ export const BasicModal = ({ open, handleClose, comic }) => {
   )
 }
 
-BasicModal.propTypes = {
-  open: propTypes.bool.isRequired,
-  handleClose: propTypes.func.isRequired,
-  comic: propTypes.object.isRequired,
-}
 
-export const InfoModal = ({ open, handleClose, comic }) => {
+
+
+export const InfoModal: React.FC<{open: boolean,handleClose: () => void, comic: ComicDetails }> = ({ open, handleClose, comic }) => {
   return (
     <>
       {ReactDOM.createPortal(
         <BasicModal open={open} handleClose={handleClose} comic={comic} />,
-        document.getElementById('modal-root'),
+        (document.getElementById('modal-root')) as HTMLElement,
       )}
     </>
   )
-}
-
-InfoModal.propTypes = {
-  open: propTypes.bool.isRequired,
-  handleClose: propTypes.func.isRequired,
-  comic: propTypes.object.isRequired,
 }
